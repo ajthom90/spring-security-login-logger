@@ -29,11 +29,11 @@ public class LoginAttemptService {
 	private static final String SQL = "INSERT INTO %%TABLE_NAME%% VALUES (?, ?, ?, ?)"; //$NON-NLS-1$
 
 	/**
-	 * This service will log login attempts to a database. This is handled in
-	 * another thread, so the
+	 * This service will log login attempts to a database. This is conditionally handled in a separate thread
+	 * based on the annotation setting.
 	 * 
-	 * @param username
-	 * @param success
+	 * @param username The username given in the login attempt
+	 * @param success Whether the login attempt was successful or not (value is true if attempt was successful)
 	 */
 	public void putAttemptInDatabase(final String username, final boolean success) {
 		if (runInSeparateThread) {

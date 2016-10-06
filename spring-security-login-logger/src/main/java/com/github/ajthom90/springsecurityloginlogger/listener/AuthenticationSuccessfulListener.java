@@ -5,19 +5,22 @@ import org.springframework.security.authentication.event.AuthenticationSuccessEv
 
 import com.github.ajthom90.springsecurityloginlogger.service.LoginAttemptService;
 
-public class AuthenticationSuccessfulListener implements ApplicationListener<AuthenticationSuccessEvent>
-{
+public class AuthenticationSuccessfulListener implements ApplicationListener<AuthenticationSuccessEvent> {
 	private LoginAttemptService service;
-	
-	public AuthenticationSuccessfulListener(LoginAttemptService service) {
+
+	private boolean log;
+
+	public AuthenticationSuccessfulListener(LoginAttemptService service, boolean log) {
 		this.service = service;
+		this.log = log;
 	}
 
 	@Override
-	public void onApplicationEvent(final AuthenticationSuccessEvent event)
-	{
+	public void onApplicationEvent(final AuthenticationSuccessEvent event) {
+		if (!log) {
+			return;
+		}
 		final String userName = event.getAuthentication().getName();
 		service.putAttemptInDatabase(userName, true);
 	}
 }
-
