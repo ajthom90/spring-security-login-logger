@@ -28,3 +28,5 @@ The version number can be any release as defined on GitHub.  To always keep up t
 ## Prerequisites
 This utility requires Spring Security, and also the Spring JDBC JAR on the build path.  At this time, the utility will only log to a database via JDBC, but in the future it may support other datastores.  If you have an idea for another datastore, please submit an issue (or, even better, download the source code, add support, and submit a pull request!!).  
 
+## Database Table Layout
+The database table layout is fairly simple (four columns, using a GUID as the primary key).  Sample DDL for MySQL can be found in src/main/java/com/github/ajthom/springsecurityloginlogger/service 
