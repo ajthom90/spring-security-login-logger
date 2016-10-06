@@ -15,6 +15,8 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.github.ajthom90.springsecurityloginlogger.EnableLoginAttemptLogging;
+import com.github.ajthom90.springsecurityloginlogger.configuration.condition.FailedLoggerCondition;
+import com.github.ajthom90.springsecurityloginlogger.configuration.condition.SuccessLoggerCondition;
 import com.github.ajthom90.springsecurityloginlogger.listener.AuthenticationSuccessfulListener;
 import com.github.ajthom90.springsecurityloginlogger.listener.FailedAuthenticationListener;
 import com.github.ajthom90.springsecurityloginlogger.service.LoginAttemptService;
@@ -36,13 +38,13 @@ public class LoginAttemptLoggingConfiguration implements ImportAware {
 	}
 
 	@Bean
-	@Conditional(LogSuccessfulAttemptsCondition.class)
+	@Conditional(SuccessLoggerCondition.class)
 	public AuthenticationSuccessfulListener successfulCondition(LoginAttemptService service) {
 		return new AuthenticationSuccessfulListener(service);
 	}
 	
 	@Bean
-	@Conditional(LogFailedAttemptsCondition.class)
+	@Conditional(FailedLoggerCondition.class)
 	public FailedAuthenticationListener failedCondition(LoginAttemptService service) {
 		return new FailedAuthenticationListener(service);
 	}
@@ -56,19 +58,5 @@ public class LoginAttemptLoggingConfiguration implements ImportAware {
 		this.runInSeparateThread = enableAttrs.getBoolean("runInSeparateThread");
 		this.logFailedAttempts = enableAttrs.getBoolean("logFailedAttempts");
 		this.logSuccessfulAttempts = enableAttrs.getBoolean("logSuccessfulAttempts");
-	}
-
-	public class LogFailedAttemptsCondition implements Condition {
-		@Override
-		public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
-			return LoginAttemptLoggingConfiguration.this.logFailedAttempts;
-		}
-	}
-
-	public class LogSuccessfulAttemptsCondition implements Condition {
-		@Override
-		public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
-			return LoginAttemptLoggingConfiguration.this.logSuccessfulAttempts;
-		}
 	}
 }
