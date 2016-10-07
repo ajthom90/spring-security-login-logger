@@ -1,4 +1,4 @@
-package com.github.ajthom90.springsecurityloginlogger.service;
+package com.andrewthom.springsecurityloginlogger.service;
 
 import java.util.Date;
 import java.util.UUID;

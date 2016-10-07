@@ -1,4 +1,4 @@
-package com.github.ajthom90.springsecurityloginlogger;
+package com.andrewthom.springsecurityloginlogger;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import com.github.ajthom90.springsecurityloginlogger.configuration.LoginAttemptLoggingConfiguration;
+import com.andrewthom.springsecurityloginlogger.configuration.LoginAttemptLoggingConfiguration;
 
 /**
  * This annotation can be placed on any Spring configuration class to 

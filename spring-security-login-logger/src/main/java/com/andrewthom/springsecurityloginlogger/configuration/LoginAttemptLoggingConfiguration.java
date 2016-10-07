@@ -1,4 +1,4 @@
-package com.github.ajthom90.springsecurityloginlogger.configuration;
+package com.andrewthom.springsecurityloginlogger.configuration;
 
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -10,10 +10,10 @@ import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.github.ajthom90.springsecurityloginlogger.EnableLoginAttemptLogging;
-import com.github.ajthom90.springsecurityloginlogger.listener.AuthenticationSuccessfulListener;
-import com.github.ajthom90.springsecurityloginlogger.listener.FailedAuthenticationListener;
-import com.github.ajthom90.springsecurityloginlogger.service.LoginAttemptService;
+import com.andrewthom.springsecurityloginlogger.EnableLoginAttemptLogging;
+import com.andrewthom.springsecurityloginlogger.listener.AuthenticationSuccessfulListener;
+import com.andrewthom.springsecurityloginlogger.listener.FailedAuthenticationListener;
+import com.andrewthom.springsecurityloginlogger.service.LoginAttemptService;
 
 @Configuration
 public class LoginAttemptLoggingConfiguration implements ImportAware {

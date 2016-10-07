@@ -1,9 +1,9 @@
-package com.github.ajthom90.springsecurityloginlogger.listener;
+package com.andrewthom.springsecurityloginlogger.listener;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 
-import com.github.ajthom90.springsecurityloginlogger.service.LoginAttemptService;
+import com.andrewthom.springsecurityloginlogger.service.LoginAttemptService;
 
 public class AuthenticationSuccessfulListener implements ApplicationListener<AuthenticationSuccessEvent> {
 	private LoginAttemptService service;

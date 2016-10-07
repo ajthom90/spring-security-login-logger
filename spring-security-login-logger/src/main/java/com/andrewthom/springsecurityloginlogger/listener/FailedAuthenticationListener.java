@@ -1,9 +1,9 @@
-package com.github.ajthom90.springsecurityloginlogger.listener;
+package com.andrewthom.springsecurityloginlogger.listener;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 
-import com.github.ajthom90.springsecurityloginlogger.service.LoginAttemptService;
+import com.andrewthom.springsecurityloginlogger.service.LoginAttemptService;
 
 public class FailedAuthenticationListener implements ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
 	private LoginAttemptService service;
