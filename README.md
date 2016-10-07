@@ -1,5 +1,7 @@
 # Spring Security Login Attempt Logger
 
+[![Release](https://jitpack.io/v/com.andrewthom/spring-security-login-logger.svg)](https://jitpack.io/#com.andrewthom/spring-security-login-logger)
+
 A utility that will allow a single annotation to enable login attempt logging to a database via JDBC.
 
 To use, add the following repository to your Maven configuration: 
@@ -17,9 +19,9 @@ And add the following dependency:
 
 ```
 <dependency>
-  <groupId>com.github.ajthom90</groupId>
+  <groupId>com.andrewthom</groupId>
   <artifactId>spring-security-login-logger</artifactId>
-  <version>0.1</version>
+  <version>0.1</version> <!-- Replace with whatever the current version is -->
 </dependency>
 ```
 
