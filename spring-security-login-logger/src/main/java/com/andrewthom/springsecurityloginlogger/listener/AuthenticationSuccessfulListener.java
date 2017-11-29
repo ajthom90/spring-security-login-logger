@@ -5,6 +5,8 @@ import org.springframework.security.authentication.event.AuthenticationSuccessEv
 
 import com.andrewthom.springsecurityloginlogger.service.LoginAttemptService;
 
+import static com.andrewthom.springsecurityloginlogger.listener.AuthenticationResult.SUCCESS;
+
 public class AuthenticationSuccessfulListener implements ApplicationListener<AuthenticationSuccessEvent> {
 	private LoginAttemptService service;
 
@@ -21,6 +23,6 @@ public class AuthenticationSuccessfulListener implements ApplicationListener<Aut
 			return;
 		}
 		final String userName = event.getAuthentication().getName();
-		service.putAttemptInDatabase(userName, true);
+		service.putAttemptInDatabase(userName, SUCCESS);
 	}
 }

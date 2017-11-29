@@ -5,16 +5,13 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 
+import com.andrewthom.springsecurityloginlogger.listener.AuthenticationResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 public class LoginAttemptService {
-	@Autowired
 	private JdbcTemplate template;
-
-	@Autowired
 	private ExecutorService threadPool;
-
 	private String tableName;
 	private boolean runInSeparateThread;
 
@@ -26,32 +23,29 @@ public class LoginAttemptService {
 		this.runInSeparateThread = runInSeparateThread;
 	}
 
-	private static final String SQL = "INSERT INTO %%TABLE_NAME%% VALUES (?, ?, ?, ?)"; //$NON-NLS-1$
+	private static final String SQL = "INSERT INTO %%TABLE_NAME%%(id, username, datetime, result) VALUES (?, ?, ?, ?)"; //$NON-NLS-1$
 
 	/**
 	 * This service will log login attempts to a database. This is conditionally handled in a separate thread
 	 * based on the annotation setting.
 	 * 
 	 * @param username The username given in the login attempt
-	 * @param success Whether the login attempt was successful or not (value is true if attempt was successful)
+	 * @param result Result of the authentication attempt
 	 */
-	public void putAttemptInDatabase(final String username, final boolean success) {
+	public void putAttemptInDatabase(final String username, final AuthenticationResult result) {
 		if (runInSeparateThread) {
-			threadPool.submit(new Callable<Void>() {
-				@Override
-				public Void call() throws Exception {
-					final String guid = "J" + UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
-					final Date datetime = new Date();
-					template.update(getQuery(), guid, username, datetime, success);
-					return null;
-				}
+			threadPool.submit((Callable<Void>) () -> {
+				final String guid = "J" + UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
+				final Date datetime = new Date();
+				template.update(getQuery(), guid, username, datetime, result.name());
+				return null;
 			});
 		}
 		else
 		{
 			final String guid = "J" + UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
 			final Date datetime = new Date();
-			template.update(getQuery(), guid, username, datetime, success);
+			template.update(getQuery(), guid, username, datetime, result.name());
 		}
 	}
 
