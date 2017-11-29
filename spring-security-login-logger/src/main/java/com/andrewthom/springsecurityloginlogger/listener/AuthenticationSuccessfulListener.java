@@ -4,6 +4,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 
 import com.andrewthom.springsecurityloginlogger.service.LoginAttemptService;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 import static com.andrewthom.springsecurityloginlogger.listener.AuthenticationResult.SUCCESS;
 
@@ -23,6 +24,13 @@ public class AuthenticationSuccessfulListener implements ApplicationListener<Aut
 			return;
 		}
 		final String userName = event.getAuthentication().getName();
-		service.putAttemptInDatabase(userName, SUCCESS);
+		String ipAddress = "unknown";
+		try {
+			ipAddress = ((WebAuthenticationDetails) event.getAuthentication().getDetails()).getRemoteAddress();
+		} catch (Exception e) {
+			// continue without getting IP address
+		}
+
+		service.putAttemptInDatabase(userName, SUCCESS, ipAddress);
 	}
 }

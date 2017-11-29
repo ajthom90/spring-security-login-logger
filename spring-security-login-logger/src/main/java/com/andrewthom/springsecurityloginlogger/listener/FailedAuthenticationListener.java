@@ -7,6 +7,7 @@ import org.springframework.security.authentication.event.AuthenticationFailureBa
 
 import com.andrewthom.springsecurityloginlogger.service.LoginAttemptService;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 public class FailedAuthenticationListener implements ApplicationListener<AbstractAuthenticationFailureEvent> {
 	private LoginAttemptService service;
@@ -30,7 +31,13 @@ public class FailedAuthenticationListener implements ApplicationListener<Abstrac
 		else {
 			username = "unknown";
 		}
+		String ipAddress = "unknown";
+		try {
+			ipAddress = ((WebAuthenticationDetails) event.getAuthentication().getDetails()).getRemoteAddress();
+		} catch (Exception e) {
+			// continue without getting IP address
+		}
 		AuthenticationResult result = AuthenticationResult.getFailureByClass(event.getClass());
-		service.putAttemptInDatabase(username, result);
+		service.putAttemptInDatabase(username, result, ipAddress);
 	}
 }

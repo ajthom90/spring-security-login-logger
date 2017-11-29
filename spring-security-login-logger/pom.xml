@@ -4,7 +4,7 @@
 
 	<groupId>com.andrewthom</groupId>
 	<artifactId>spring-security-login-logger</artifactId>
-	<version>0.2.0</version>
+	<version>0.2.1</version>
 	<packaging>jar</packaging>
 
 	<name>spring-security-login-logger</name>

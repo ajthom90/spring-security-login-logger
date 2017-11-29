@@ -23,7 +23,7 @@ public class LoginAttemptService {
 		this.runInSeparateThread = runInSeparateThread;
 	}
 
-	private static final String SQL = "INSERT INTO %%TABLE_NAME%%(id, username, datetime, result) VALUES (?, ?, ?, ?)"; //$NON-NLS-1$
+	private static final String SQL = "INSERT INTO %%TABLE_NAME%%(id, username, datetime, result, ip_address) VALUES (?, ?, ?, ?, ?)"; //$NON-NLS-1$
 
 	/**
 	 * This service will log login attempts to a database. This is conditionally handled in a separate thread
@@ -32,12 +32,12 @@ public class LoginAttemptService {
 	 * @param username The username given in the login attempt
 	 * @param result Result of the authentication attempt
 	 */
-	public void putAttemptInDatabase(final String username, final AuthenticationResult result) {
+	public void putAttemptInDatabase(final String username, final AuthenticationResult result, String ipAddress) {
 		if (runInSeparateThread) {
 			threadPool.submit((Callable<Void>) () -> {
 				final String guid = "J" + UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
 				final Date datetime = new Date();
-				template.update(getQuery(), guid, username, datetime, result.name());
+				template.update(getQuery(), guid, username, datetime, result.name(), ipAddress);
 				return null;
 			});
 		}
@@ -45,7 +45,7 @@ public class LoginAttemptService {
 		{
 			final String guid = "J" + UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
 			final Date datetime = new Date();
-			template.update(getQuery(), guid, username, datetime, result.name());
+			template.update(getQuery(), guid, username, datetime, result.name(), ipAddress);
 		}
 	}
 
