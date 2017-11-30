@@ -4,7 +4,7 @@
 
 	<groupId>com.andrewthom</groupId>
 	<artifactId>spring-security-login-logger</artifactId>
-	<version>0.2.1</version>
+	<version>0.2.3</version>
 	<packaging>jar</packaging>
 
 	<name>spring-security-login-logger</name>
@@ -32,6 +32,11 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
 			<version>4.3.13.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
 		</dependency>
 	</dependencies>
 

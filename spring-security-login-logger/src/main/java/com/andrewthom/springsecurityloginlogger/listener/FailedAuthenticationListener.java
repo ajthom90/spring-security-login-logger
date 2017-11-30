@@ -8,6 +8,10 @@ import org.springframework.security.authentication.event.AuthenticationFailureBa
 import com.andrewthom.springsecurityloginlogger.service.LoginAttemptService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class FailedAuthenticationListener implements ApplicationListener<AbstractAuthenticationFailureEvent> {
 	private LoginAttemptService service;
@@ -32,10 +36,19 @@ public class FailedAuthenticationListener implements ApplicationListener<Abstrac
 			username = "unknown";
 		}
 		String ipAddress = "unknown";
-		try {
-			ipAddress = ((WebAuthenticationDetails) event.getAuthentication().getDetails()).getRemoteAddress();
-		} catch (Exception e) {
-			// continue without getting IP address
+		HttpServletRequest currentRequest = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+		if (currentRequest != null) {
+			String ipHeader = currentRequest.getHeader("X-Forwarded-For");
+			if (ipHeader != null && !ipHeader.isEmpty()) {
+				ipAddress = ipHeader;
+			}
+		}
+		if ("unknown".equals(ipAddress)) {
+			try {
+				ipAddress = ((WebAuthenticationDetails) event.getAuthentication().getDetails()).getRemoteAddress();
+			} catch (Exception e) {
+				// continue without getting IP address
+			}
 		}
 		AuthenticationResult result = AuthenticationResult.getFailureByClass(event.getClass());
 		service.putAttemptInDatabase(username, result, ipAddress);
