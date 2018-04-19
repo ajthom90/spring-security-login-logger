@@ -4,7 +4,7 @@
 
 	<groupId>com.andrewthom</groupId>
 	<artifactId>spring-security-login-logger</artifactId>
-	<version>0.2.3</version>
+	<version>0.3.0</version>
 	<packaging>jar</packaging>
 
 	<name>spring-security-login-logger</name>
@@ -14,19 +14,19 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		<kotlin.version>1.2.31</kotlin.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-stdlib-jdk8</artifactId>
+			<version>${kotlin.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
 			<version>4.2.3.RELEASE</version>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -38,13 +38,37 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
 		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.mockk</groupId>
+			<artifactId>mockk</artifactId>
+			<version>1.7.15</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
+	<pluginRepositories>
+		<pluginRepository>
+			<id>jcenter</id>
+			<name>JCenter</name>
+			<url>https://jcenter.bintray.com/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
 	<build>
+		<sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+		<testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
 		<plugins>
 			<plugin>  <!-- Create sources.jar -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
+				<version>3.0.1</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -53,6 +77,49 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.jetbrains.dokka</groupId>
+				<artifactId>dokka-maven-plugin</artifactId>
+				<version>0.9.16</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<phase>test</phase>
+						<goals>
+							<goal>javadocJar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>kotlin-maven-plugin</artifactId>
+				<groupId>org.jetbrains.kotlin</groupId>
+				<version>${kotlin.version}</version>
+
+				<configuration>
+					<compilerPlugins>
+						<plugin>spring</plugin>
+					</compilerPlugins>
+				</configuration>
+
+				<executions>
+					<execution>
+						<id>compile</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
+
+				<dependencies>
+					<dependency>
+						<groupId>org.jetbrains.kotlin</groupId>
+						<artifactId>kotlin-maven-allopen</artifactId>
+						<version>${kotlin.version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 	</build>
