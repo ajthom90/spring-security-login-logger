@@ -15,21 +15,16 @@ class AuthenticationSuccessfulListener(private val service: LoginAttemptService,
 		}
 		val userName = event.authentication.name
 		var ipAddress = "unknown"
-		val currentRequest = (RequestContextHolder.currentRequestAttributes() as ServletRequestAttributes).request
+		val currentRequest = (RequestContextHolder.currentRequestAttributes() as? ServletRequestAttributes)?.request
 		if (currentRequest != null) {
 			val ipHeader = currentRequest.getHeader("X-Forwarded-For")
-			if (ipHeader != null && !ipHeader.isEmpty()) {
+			if (!ipHeader.isNullOrEmpty()) {
 				ipAddress = ipHeader
 			}
 		}
 		if ("unknown" == ipAddress) {
-			try {
-				ipAddress = (event.authentication.details as WebAuthenticationDetails).remoteAddress
-			} catch (e: Exception) {
-				// continue without getting IP address
-			}
-
+			ipAddress = (event.authentication.details as? WebAuthenticationDetails)?.remoteAddress ?: "unknown"
 		}
-		service.putAttemptInDatabase(userName, SUCCESS, ipAddress)
+		service.logAttempt(userName, SUCCESS, ipAddress)
 	}
 }

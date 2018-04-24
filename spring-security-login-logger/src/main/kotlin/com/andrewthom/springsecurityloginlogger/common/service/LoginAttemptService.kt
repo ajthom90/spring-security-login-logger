@@ -10,5 +10,5 @@ interface LoginAttemptService {
 	 * @param username The username given in the login attempt
 	 * @param result Result of the authentication attempt
 	 */
-	fun putAttemptInDatabase(username: String, result: AuthenticationResult, ipAddress: String)
+	fun logAttempt(username: String, result: AuthenticationResult, ipAddress: String)
 }

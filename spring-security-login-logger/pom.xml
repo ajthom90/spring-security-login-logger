@@ -4,7 +4,7 @@
 
 	<groupId>com.andrewthom</groupId>
 	<artifactId>spring-security-login-logger</artifactId>
-	<version>0.3.0</version>
+	<version>0.3.1</version>
 	<packaging>jar</packaging>
 
 	<name>spring-security-login-logger</name>
@@ -49,6 +49,12 @@
 			<groupId>io.mockk</groupId>
 			<artifactId>mockk</artifactId>
 			<version>1.7.15</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1.1</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
